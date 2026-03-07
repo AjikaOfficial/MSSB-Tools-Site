@@ -1,0 +1,81 @@
+from django.db import models
+
+
+class Ability(models.Model):
+    name = models.CharField(max_length=16)
+    description = models.TextField()
+
+
+class Character(models.Model):
+
+    TYPE_CHOICES = {
+        "BALANCE": "Balance",
+        "TECHNIQUE": "Technique",
+        "SPEED": "Speed",
+        "POWER": "Power",
+    }
+
+    STAR_PITCH_CHOICES = {
+        "FASTBALL": "Fastball",
+        "CHANGEUP": "Changeup",
+        "CURVEBALL": "Curveball",
+    }
+
+    STAR_SWING_CHOICES = {
+        "POP_FLY": "Pop Fly",
+        "GROUNDER": "Grounder",
+        "LINE_DRIVE": "Line Drive",
+    }
+
+    HORIZONTAL_HIT_TRAJECTORY_CHOICES = {
+        "PULL": "Pull",
+        "MID": "Mid",
+        "PUSH": "Push",
+    }
+
+    VERTICAL_HIT_TRAJECTORY_CHOICES = {
+        "HIGH": "High",
+        "MID": "Mid",
+        "LOW": "Low",
+    }
+
+    name = models.CharField(max_length=32)
+    type = models.CharField(max_length=16, choices=TYPE_CHOICES)
+    curve_ball_speed = models.PositiveSmallIntegerField()
+    fast_ball_speed = models.PositiveSmallIntegerField()
+    curve = models.PositiveSmallIntegerField()
+    throw_power = models.PositiveSmallIntegerField()
+    speed = models.PositiveSmallIntegerField()
+    slap_hit_power = models.PositiveSmallIntegerField()
+    charge_hit_power = models.PositiveSmallIntegerField()
+    bunting = models.PositiveSmallIntegerField()
+    height = models.FloatField()
+    dive_range = models.FloatField()
+    bat_reach = models.PositiveSmallIntegerField()
+    full_charge_frames = models.PositiveSmallIntegerField()
+    wall_splat = models.BooleanField(default=False)
+    curved_hits = models.BooleanField(default=False)
+
+    abilities = models.ManyToManyField(Ability, related_name="characters")
+    star_pitch = models.CharField(max_length=16, choices=STAR_PITCH_CHOICES)
+    star_swing = models.CharField(max_length=16, choices=STAR_SWING_CHOICES)
+    horizontal_hit_trajectory = models.CharField(
+        max_length=4, choices=HORIZONTAL_HIT_TRAJECTORY_CHOICES
+    )
+    vertical_hit_trajectory = models.CharField(
+        max_length=4, choices=VERTICAL_HIT_TRAJECTORY_CHOICES
+    )
+
+    chemistry = models.ManyToManyField("self", blank=True)
+    anti_chemistry = models.ManyToManyField("self", blank=True)
+
+    def is_captain(self):
+        return False
+
+
+class Captain(Character):
+    captain_star_pitch = models.CharField(max_length=16)
+    captain_star_swing = models.CharField(max_length=16)
+
+    def is_captain(self):
+        return True
