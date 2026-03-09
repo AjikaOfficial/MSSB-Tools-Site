@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
+@plugin "daisyui";
 
 /**
   * A catch-all path to Django template files, JavaScript, and Python files
@@ -9,3 +9,67 @@
   * the scope of this path.
   */
 @source "../../../**/*.{html,py,js}";
+
+@font-face {
+  font-family: "Boss";
+  src: url("/fonts/Boss-Regular.otf") format("otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Boss";
+  src: url("/fonts/Boss-Italic.otf") format("otf");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Boss";
+
+  --color-primary-light: #f3f4f6;
+  --color-primary-dark: #101828;
+
+  --color-red-light: #e7000b;
+  --color-red-dark: #82181a;
+
+  --color-blue: #155dfc;
+}
+
+@layer base {
+  main {
+    color: var(--color-primary-dark);
+    @apply text-shadow-lg/100;
+  }
+  .dark main,
+  html.dark main,
+  body.dark main {
+    color: var(--color-primary-light);
+  }
+}
+
+h1 {
+  @apply text-5xl font-extrabold mb-4;
+}
+
+h2 {
+  @apply text-4xl font-bold mb-2;
+}
+
+h3 {
+  @apply text-3xl font-semibold mb-2;
+}
+
+h4 {
+  @apply text-2xl font-medium mb-1;
+}
+
+h5 {
+  @apply text-xl font-medium mb-1;
+}
+
+h6 {
+  @apply text-lg font-medium mb-1;
+}

@@ -2,3 +2,4 @@ Django
 psycopg2-binary # PostgreSQL database adapter for Python, used to connect Django to a PostgreSQL database.
 #gunicorn
 django-tailwind#[cookiecutter,honcho,django-browser-reload] # For Tailwind CSS integration with Django, including optional dependencies for cookiecutter, honcho, and django-browser-reload.
+Pillow # Python Imaging Library, used for image processing in Django.
