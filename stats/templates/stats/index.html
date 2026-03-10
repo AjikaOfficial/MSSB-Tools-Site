@@ -2,17 +2,23 @@
 {% block title %}Stats{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8 grid place-items-center text-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+<div class="container max-w-6xl mx-auto px-4 py-8 grid place-items-center text-center grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
+{% load variant_tags %}
 {% for character in char_list %}
-  <div class="card">
-    <h3>{{ character.name }}</h3>
-    {% if character.variants.exists %}
-      <ul>
-        {% for variant in character.variants.all %}
-          <li>{{ variant.name }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+  <div class="card card-md w-full h-50 card-border shadow-sm">
+    <a>
+      <div class="card-body">
+        <img src="/media/{{ character.icon }}" alt="{{ character.name }} image" class="w-24 h-24 mx-auto">
+        <h2 class="card-title justify-center">{{ character.name }}</h2>
+        {% if character.variants.exists %}
+          <div class="card-actions justify-center">
+            {% for variant in character.variants.all %}
+              <div class="badge badge-xs badge-outline">{{ variant.name|identifier }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </a>
   </div>
 {% endfor %}
 </div>

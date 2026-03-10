@@ -1,43 +1,20 @@
-if (
-  localStorage.theme === "dark" ||
-  (!localStorage.theme &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches)
-) {
-  document.documentElement.classList.add("dark")
-} else {
-  document.documentElement.classList.remove("dark")
-}
+(() => {
+  const ctrl = document.querySelector('.theme-controller');
+  const root = document.documentElement;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("theme-toggle");
-  const dot = document.getElementById("toggle-dot");
-
-  function updateUI(isDark) {
-    if (isDark) {
-      dot.style.transform = "translateX(20px)";
-      toggle.checked = true;
-    } else {
-      dot.style.transform = "translateX(0px)";
-      toggle.checked = false;
-    }
+  // initialise from storage / prefers‑color‑scheme
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    root.setAttribute('data-theme', saved);
+    ctrl.checked = saved === 'dark';
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    root.setAttribute('data-theme', 'dark');
+    ctrl.checked = true;
   }
 
-  let isDark =
-    localStorage.theme === "dark" ||
-    (!localStorage.theme &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-  updateUI(isDark);
-
-  toggle.addEventListener("change", () => {
-    if (toggle.checked) {
-      document.documentElement.classList.add("dark");
-      localStorage.theme = "dark";
-      updateUI(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.theme = "light";
-      updateUI(false);
-    }
+  ctrl.addEventListener('change', () => {
+    const theme = ctrl.checked ? 'dark' : 'light';
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
   });
-});
+})();
