@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "import_export",
     "tailwind",
-    'theme',
+    "theme",
     "stats",
 ]
 
@@ -134,3 +135,4 @@ NPM_BIN_PATH = "/usr/bin/npm"
 if DEBUG:
     INSTALLED_APPS += ["django_browser_reload"]
     MIDDLEWARE += ["django_browser_reload.middleware.BrowserReloadMiddleware"]
+    ALLOWED_HOSTS += ["127.0.0.1", "localhost"]

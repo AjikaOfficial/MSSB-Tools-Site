@@ -1,4 +1,6 @@
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from .models import *
 
 
@@ -39,6 +41,8 @@ class CharacterAdmin(admin.ModelAdmin):
         "trimmed_bat",
     ]
 
+    filter_horizontal = ["abilities", "chemistry", "anti_chemistry", "variants"]
+
 
 class CaptainAdmin(admin.ModelAdmin):
     fields = [
@@ -74,7 +78,23 @@ class CaptainAdmin(admin.ModelAdmin):
         "trimmed_bat",
     ]
 
+    filter_horizontal = ["abilities", "chemistry", "anti_chemistry", "variants"]
+
+
+class CharacterResource(resources.ModelResource):
+    class Meta:
+        model = Character
+class CharacterBulkAdmin(ImportExportModelAdmin):
+    resource_class = CharacterResource
+
+class CaptainResource(resources.ModelResource):
+    class Meta:
+        model = Captain
+class CaptainBulkAdmin(ImportExportModelAdmin):
+    resource_class = CaptainResource
 
 admin.site.register(Ability, AbilityAdmin)
 admin.site.register(Character, CharacterAdmin)
 admin.site.register(Captain, CaptainAdmin)
+# admin.site.register(Character, CharacterBulkAdmin)
+# admin.site.register(Captain, CaptainBulkAdmin)

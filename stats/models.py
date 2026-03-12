@@ -1,9 +1,9 @@
 from django.db import models
-
+from theme.models import Image
 
 class Ability(models.Model):
     name = models.CharField(max_length=16, unique=True)
-    description = models.TextField()
+    description = models.TextField( blank=True )
 
     def __str__(self):
         return self.name
@@ -79,8 +79,8 @@ class Character(models.Model):
     main_variant = models.BooleanField(default=True)
     variants = models.ManyToManyField("self", blank=True)
 
-    icon = models.ImageField(upload_to="character_icons/", blank=True, null=True)
-    portrait = models.ImageField(upload_to="character_portraits/", blank=True, null=True)
+    icon = models.ForeignKey(Image, on_delete=models.PROTECT, blank=True, null=True, related_name="icon_characters")
+    portrait = models.ForeignKey(Image, on_delete=models.PROTECT, blank=True, null=True, related_name="portrait_characters")
 
     def __str__(self):
         return self.name
