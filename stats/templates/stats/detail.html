@@ -12,14 +12,14 @@
         </figure>
         <div class="card-body items-center text-center">
             <h2 class="card-title">{{ character.name }}</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
+            <p>Intangables will go here</p>
         </div>
     </div>
 
   <div class="card card-md w-full card-border shadow-sm">
     <div class="card-body">
       <img src="/media/{{ character.icon.path }}" alt="{{ character.name }} image" class="w-24 h-24 mx-auto">
-      <h2 class="card-title justify-center">{{ character.name }}</h2>
+      <p>this is where the stat bars will go.  Icon will be removed </p>
     </div>
   </div>
 
@@ -28,13 +28,17 @@
         <h2 class="card-title">Chemistry</h2>
         <div class="grid grid-cols-3 gap-1">
             {% for chem in chem %}
-                <img class="w-24 h-24" src="/media/{{ chem.icon.path }}" alt="{{ chem.name }}">
+                <a href="{% url 'stats:detail' char_name=chem.name|slugify %}" class="flex flex-col items-center text-center">
+                    <img class="w-24 h-24" src="/media/{{ chem.icon.path }}" alt="{{ chem.name }}">
+                </a>
             {% endfor %}
         </div>
         <h2 class="card-title">Anti-Chemistry</h2>
         <div class="grid grid-cols-3 gap-1">
             {% for chem in anti_chem %}
-                <img class="w-24 h-24" src="/media/{{ chem.icon.path }}" alt="{{ chem.name }}">
+                <a href="{% url 'stats:detail' char_name=chem.name|slugify %}" class="flex flex-col items-center text-center">
+                    <img class="w-24 h-24" src="/media/{{ chem.icon.path }}" alt="{{ chem.name }}">
+                </a>
             {% endfor %}
         </div>
         {% if character.variants.exists %}

@@ -5,21 +5,27 @@ register = template.Library()
 
 @register.filter
 def identifier(value):
-    if not value:
-        return ""
-    return value.split(" ", 1)[0]
-
+    match value:
+        case None:
+            return ""
+        case "Toad":
+            return "Red"
+        case "Shy Guy":
+            return "Red"
+        case "Koopa Troopa":
+            return "Green"
+        case "Koopa Paratroopa":
+            return "Red"
+        case "Magikoopa":
+            return "Blue"
+        case "Dry Bones":
+            return "Gray"
+        case _:
+             return value.split(" ", 1)[0]
 
 @register.filter
 def badge_color(identifier):
-    """Return a Tailwind border colour class for the given variant identifier.
-
-    We keep a whitelist of known colour names; anything else falls back to
-    a neutral border.  The identifier is expected to already be normalized
-    (e.g. from the ``identifier`` filter).  This allows templates to do
-    ``{{ variant.name|identifier|badge_color }}`` and insert the result
-    into the ``class`` attribute.
-    """
+    
     if not identifier:
         return "border-gray-500"
     key = identifier.lower()
@@ -30,8 +36,9 @@ def badge_color(identifier):
         "yellow": "border-yellow-500",
         "purple": "border-purple-500",
         "black": "border-black",
+        "hammer": "border-green-500",
         "fire": "border-red-500",
-        "boomerang": "border-green-500",
+        "boomerang": "border-blue-500",
     }
     if key in mapping:
         return mapping[key]

@@ -13,12 +13,10 @@
           <div class="card-actions justify-center">
             {% for variant in character.variants.all %}
               {% if variant.id != character.id %} 
-                {% with ident=variant.name|identifier %}
-                  <a href="{% url 'stats:detail' char_name=variant.name|slugify %}"
-                     class="badge badge-xs badge-outline {{ ident|badge_color }}">
-                    {{ ident }}
-                  </a>
-                {% endwith %}
+                <a href="{% url 'stats:detail' char_name=variant.name|slugify %}"
+                    class="badge badge-xs badge-outline {{ variant.name|identifier|badge_color }}">
+                  {{ variant.name|identifier }}
+                </a>
               {% endif %}
             {% endfor %}
           </div>
