@@ -47,6 +47,22 @@
   .drop-shadow {
     text-shadow: 3px 3px rgba(0, 0, 0, 100%);
   }
+
+  dt {
+    @apply text-right
+  }
+
+  .gradient-progress::-webkit-progress-value {
+    background-color: var(--progress-color);
+  }
+
+  .gradient-progress::-moz-progress-bar {
+    background-color: var(--progress-color);
+  }
+
+  .stat-slider{
+    border
+  }
 }
 
 @plugin "daisyui/theme" {

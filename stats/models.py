@@ -85,12 +85,21 @@ class Character(models.Model):
     def __str__(self):
         return self.name
     
+    @property
     def is_captain(self):
-        return False
+        return hasattr(self, "captain")
+    
+    @property
+    def misc_traits(self):
+        traits=[]
+        if(self.wall_splat):
+            traits.append("Wall Splat")
+        if(self.curved_hits):
+            traits.append("Curved Hits")
+        if(self.trimmed_bat):
+            traits.append("Trimmed Bat")
+        return traits
 
 
 class Captain(Character):
-    captain_star_ability = models.CharField(max_length=16)
-
-    def is_captain(self):
-        return True
+    star_ability = models.CharField(max_length=16)

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db.models import Prefetch
 from django.http import Http404
 from .models import Character
+from django.db.models import PositiveSmallIntegerField, FloatField
 
 
 def index(request):

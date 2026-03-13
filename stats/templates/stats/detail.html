@@ -1,58 +1,215 @@
 {% extends "base.html" %}
 {% block title %}{{ character.name }}{% endblock %}
 {% load variant_tags %}
+{% load static %}
 {% block content %}
 <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
     <div class="card card-xl w-full card-border shadow-sm">
         <figure class="px-10 pt-10">
             <img
             src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-            alt="Shoes"
+            alt="{{ character.name }} portrait"
             class="rounded-xl" />
         </figure>
-        <div class="card-body items-center text-center">
-            <h2 class="card-title">{{ character.name }}</h2>
-            <p>Intangables will go here</p>
+        <div class="card-body items-center">
+            <h2 class="card-title justify-center">{{ character.name }}</h2>
+            <dl class="grid grid-cols-[auto_1fr] gap-4 text-sm">
+                <dt>Type:</dt>
+                <dd>{{ character.get_type_display }}</dd>
+                <dt>
+                    Abilit{{ character.abilities.all|length|pluralize:"y,ies" }}:
+                </dt>
+                <dd>
+                    {% for ability in character.abilities.all %}
+                        {{ ability.name }}{% if not forloop.last %}<br>{% endif %}
+                    {% endfor %}
+                </dd>
+                {% if character.is_captain %}
+                    <dt>Star Ability:</dt>
+                    <dd>{{ character.captain.star_ability }}</dd>
+                {% endif %}
+                <dt>Star Pitch:</dt>
+                <dd> {{ character.get_star_pitch_display }} </dd>
+                <dt>Star Swing:</dt>
+                <dd> {{ character.get_star_swing_display }} </dd>
+                <dt>Swing Trajectory:</dt>
+                <dd>{{ character.get_horizontal_hit_trajectory_display }} {{ character.get_vertical_hit_trajectory_display }} </dd>
+                {% if character.misc_traits %}
+                    <dt>Misc:</dt>
+                    <dd>
+                    {% for trait in character.misc_traits %}
+                        {{ trait }}{% if not forloop.last %}<br>{% endif %}
+                    {% endfor %}
+                    </dd>
+                {% endif %}
+            </dl>
         </div>
     </div>
 
-  <div class="card card-md w-full card-border shadow-sm">
-    <div class="card-body">
-      <img src="/media/{{ character.icon.path }}" alt="{{ character.name }} image" class="w-24 h-24 mx-auto">
-      <p>this is where the stat bars will go.  Icon will be removed </p>
-    </div>
-  </div>
 
-  <div class="card card-xl w-full card-border shadow-sm">
-    <div class="card-body">
-        <h2 class="card-title">Chemistry</h2>
-        <div class="grid grid-cols-3 gap-1">
+    <div class="card card-md w-full card-border shadow-sm">
+        <div class="card-body">
+            <section class="grid"><h2 class="text-lg border-b-2 border-neutral">Pitching</h2></section>
+            <section class="grid grid-cols-3 gap-1 items-center">
+                <span class="text-xs">Curve Ball Speed</span>
+                <progress
+                    class="progress gradient-progress" 
+                    data-value="{{ character.curve_ball_speed }}" 
+                    data-min="100"
+                    data-max="140"
+                ></progress>
+                <span>{{ character.curve_ball_speed }}</span>
+
+                <span class="text-xs">Fast Ball Speed</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.fast_ball_speed }}" 
+                    data-min="125"
+                    data-max="175"
+                ></progress>
+                <span>{{ character.fast_ball_speed }}</span>
+
+                <span class="text-xs">Curve</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.curve }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.curve }}</span>
+
+                <span class="text-xs">Cursed Ball</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.cursed_ball }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.cursed_ball }}</span>
+            </section>
+            
+            <section class="grid"><h2 class="text-lg">Batting</h2></section>
+            <section class="grid grid-cols-3 gap-1 items-center">
+                <span class="text-xs">Slap Hit Power</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.slap_hit_power }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.slap_hit_power }}</span>
+
+                <span class="text-xs">Charge Hit Power</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.charge_hit_power }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.charge_hit_power }}</span>
+
+                <span class="text-xs">Bunting</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.bunting }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.bunting }}</span>
+
+                <span class="text-xs">Bat Reach</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.bat_reach }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.bat_reach }}</span>
+
+                <span class="text-xs">Full Charge Frames</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.full_charge_frames }}" 
+                    data-min="60"
+                    data-max="0"
+                ></progress>
+                <span>{{ character.full_charge_frames }}</span>
+            </section>
+
+            <section class="grid"><h2 class="text-lg">Fielding/Running</h2></section>
+            <section class="grid grid-cols-3 gap-1 items-center">
+                <span class="text-xs">Speed</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.speed }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.speed }}</span>
+
+                <span class="text-xs">Throw Power</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.throw_power }}" 
+                    data-min="0"
+                    data-max="100"
+                ></progress>
+                <span>{{ character.throw_power }}</span>
+
+                <span class="text-xs">Dive Range</span>
+                <progress 
+                    class="progress gradient-progress" 
+                    data-value="{{ character.dive_range }}" 
+                    data-min="0"
+                    data-max="5.31"
+                ></progress>
+                <span>{{ character.dive_range }}</span>
+
+                <span>Height:</span>
+                <progress 
+                    class="progress gradient-progress"
+                    data-value="{{ character.height }}" 
+                    data-min="1.5"
+                    data-max="3.6"
+                ></progress>
+                <span>{{ character.height }}</span>
+            </section>
+        </div>
+    </div>
+
+
+    <div class="card card-xl w-full card-border shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title">Chemistry</h2>
+            <div class="grid grid-cols-3 gap-1">
             {% for chem in chem %}
                 <a href="{% url 'stats:detail' char_name=chem.name|slugify %}" class="flex flex-col items-center text-center">
                     <img class="w-24 h-24" src="/media/{{ chem.icon.path }}" alt="{{ chem.name }}">
                 </a>
             {% endfor %}
-        </div>
-        <h2 class="card-title">Anti-Chemistry</h2>
-        <div class="grid grid-cols-3 gap-1">
+            </div>
+            <h2 class="card-title">Anti-Chemistry</h2>
+            <div class="grid grid-cols-3 gap-1">
             {% for chem in anti_chem %}
                 <a href="{% url 'stats:detail' char_name=chem.name|slugify %}" class="flex flex-col items-center text-center">
                     <img class="w-24 h-24" src="/media/{{ chem.icon.path }}" alt="{{ chem.name }}">
                 </a>
             {% endfor %}
-        </div>
+            </div>
         {% if character.variants.exists %}
-        <h2 class="card-title">Variants</h2>
-        <div class="grid grid-cols-3 gap-1">
+            <h2 class="card-title">Variants</h2>
+            <div class="grid grid-cols-3 gap-1">
             {% for variant in character.variants.all %}
                 <a href="{% url 'stats:detail' char_name=variant.name|slugify %}" class="flex flex-col items-center text-center">
                     <img class="w-24 h-24" src="/media/{{ variant.icon.path }}" alt="{{ variant.name }}">
-                    {% if variant.icon == character.icon %}
-                        <div class="badge badge-xs badge-outline {{ variant.name|identifier|badge_color }}">{{ variant.name|identifier }}</div>
-                    {% endif %}
+                {% if variant.icon == character.icon %}
+                    <div class="badge badge-xs badge-outline {{ variant.name|identifier|badge_color }}">{{ variant.name|identifier }}</div>
+                {% endif %}
                 </a>
             {% endfor %}
+            </div>
         {% endif %}
     </div>
 </div>
+<script src="{% static 'js/bar_color.js' %}"></script>
 {% endblock %}
